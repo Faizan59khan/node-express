@@ -1,0 +1,193 @@
+REPL
+JS EXPRESSION:
+PS F:\web n mob\NodeJs> node
+Welcome to Node.js v15.5.1.
+Type ".help" for more information.
+> 3+3
+6
+> 10/5
+2
+>
+
+Variables:
+> var a="faizan"
+undefined
+> a
+'faizan'
+> var b="khan"
+undefined
+> b
+'khan'
+> a+b
+'faizankhan'
+
+MultiLine Codes: loops
+> do
+... {
+... x++;
+... console.log(`my value is ${x}`);
+... }while(x<6);
+Uncaught ReferenceError: x is not defined
+> var x=0;
+undefined
+> x
+0
+> do
+... {
+... x++;
+... console.log(`my value is ${x}`);
+... }while(x<6);
+my value is 1
+my value is 2
+my value is 3
+my value is 4
+my value is 5
+my value is 6
+
+use _ in repl: to get the last result
+> 4+4
+8
+> 8+2
+10
+> _+5
+15
+> _+6
+21
+
+editor mode:
+> .editor
+// Entering editor mode (Ctrl+D to finish, Ctrl+C to cancel)
+
+const name1= (x)=>{console.log(`my name is ${x}`);}
+name1("faizan"); //click ctrl+D
+
+my name is faizan
+undefined
+
+
+//Video 5: Node.js core modules
+
+const name = "faizan"
+console.log(name)
+
+//fs module 
+ const fs = require('fs') 
+ //fs.writeFileSync('read.txt',"welcome to my website")  //to create new file
+
+
+// fs.writeFileSync('read.txt',"welcome Back!")  //it will replace the data (dataoveride) 
+
+// //if i dont want to override i want to add the data
+
+// fs.appendFileSync('read.txt'," \nHello Guys!")
+
+
+//Reading:
+
+const buf_data= fs.readFileSync('read.txt')
+console.log(buf_data)
+
+//buffer is additional datatype it is mainly used to store binary data while reading from a file.
+//output
+{/* <Buffer 77 65 6c 63 6f 6d 65 20 42 61 63 6b 21 20 0a 48 65 6c 6c 6f 20 47 75 79 73 21> */}
+>
+
+
+org_data = buf_data.toString()
+console.log(org_data)
+output:
+welcome Back!
+Hello Guys!
+
+//to rename the file:
+// fs.renameSync('read.txt','readWrite.txt')
+
+Video 6:
+ const fs= require('fs');
+//fs.mkdirSync('faizan')      //basically we are creating directory
+
+// fs.writeFileSync('faizan/bio.txt',"My name is Faizan Khan") //Creating and writing in a file
+// fs.appendFileSync('faizan/bio.txt',". I am a Software Engineer")
+
+const data= fs.readFileSync('faizan/bio.txt',"utf-8"); //with encoding utf-8 no need to convert it in string
+console.log(data)
+
+output: 
+My name is Faizan Khan. I am a Software Engineer
+
+//rename the file
+//fs.renameSync('faizan/bio.txt','faizan/myBio.txt')
+
+//Delete file
+//fs.unlinkSync('faizan/myBio.txt');
+
+//Delete Folder
+//fs.rmdirSync('faizan');
+
+Video 7:
+const fs =require("fs");
+
+//creating file asynchronously
+// fs.writeFile('read.txt','today is awesome day!',
+// (err)=>{                                                   //call back is necessary
+//   console.log("file is created")
+//   console.log(err)
+// });
+
+//Append in a file
+/* fs.appendFile('read.txt',"\namazing",(err)=>{
+   console.log("task completed")
+}) */
+
+// fs.readFile('read.txt','UTF-8',(err,data)=>{  //1st argument always will be error and 2nd is the data we are getting.
+//  console.log(data);
+// });                                             //UTF-8 encode buffer data
+
+Video 10:
+const os=require("os");
+
+console.log(os.arch());  //give the architecture of os
+output:
+x64
+
+const freeMem=os.freemem();
+
+console.log(freeMem);  //gives value in bytes 
+console.log(`${freeMem/1024/1024/1024}`);  //gives value in GB
+
+const totalMem=os.totalmem();
+
+console.log(totalMem);  //gives value in bytes 
+console.log(`${totalMem/1024/1024/1024}`);  //gives value in GB
+
+console.log(os.hostname());
+console.log(os.platform());
+console.log(os.tmpdir());
+console.log(os.type());
+
+
+Video 11:
+
+const path=require("path")
+
+console.log(path.dirname('F:/web n mob/NodeJs/PathModules/path.js')) //F:/web n mob/NodeJs/PathModules
+console.log(path.extname('F:/web n mob/NodeJs/PathModules/path.js')) //.js
+console.log(path.basename('F:/web n mob/NodeJs/PathModules/path.js')) //gives file name (path.js)
+
+console.log(path.parse('F:/web n mob/NodeJs/PathModules/path.js')) //gives all the things like dir,base,name,root
+
+output:
+PS F:\web n mob\NodeJs\PathModules> node path.js
+F:/web n mob/NodeJs/PathModules
+.js
+path.js
+{
+  root: 'F:/',
+  dir: 'F:/web n mob/NodeJs/PathModules',
+  base: 'path.js',
+  ext: '.js',
+  name: 'path'
+}
+
+
+
