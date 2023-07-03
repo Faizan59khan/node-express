@@ -1,10 +1,25 @@
 import express, { Request, Response } from "express";
+import cookieParser from "cookie-parser";
+import userRoutes from "./routes/userRoutes";
 
 const app = express();
 const port = 3000;
 
-app.get("/", (req: Request, res: Response) => {
-	res.send("Hello, world!");
+// Middleware for parsing request bodies as JSON
+app.use(express.json());
+
+// Middleware for parsing URL-encoded bodies
+app.use(express.urlencoded({ extended: false }));
+
+// Middleware for parsing cookies
+app.use(cookieParser());
+
+// Mount user routes
+app.use("/", userRoutes);
+
+// Handling a 404 page not found
+app.use((req: Request, res: Response) => {
+	res.status(404).send("404 - Page Not Found");
 });
 
 app.listen(port, () => {
