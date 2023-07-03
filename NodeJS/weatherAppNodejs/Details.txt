@@ -1,0 +1,38 @@
+
+api.openweathermap.org/data/2.5/weather?q=Karachi&appid=a8e87f165324d0871a090f2491c5199f
+Key:
+a8e87f165324d0871a090f2491c5199f
+
+website:
+https://openweathermap.org/current
+
+[
+  {
+    coord: { lon: 67.0822, lat: 24.9056 },
+    weather: [ [Object] ],
+    base: 'stations',
+    main: {
+      temp: 304.05,
+      feels_like: 309.34,
+      temp_min: 304.05,
+      temp_max: 304.05,
+      pressure: 1003,
+      humidity: 66
+    },
+    visibility: 6000,
+    wind: { speed: 5.14, deg: 210 },
+    clouds: { all: 40 },
+    dt: 1621620015,
+    sys: {
+      type: 1,
+      id: 7576,
+      country: 'PK',
+      sunrise: 1621557907,
+      sunset: 1621606301
+    },
+    timezone: 18000,
+    id: 1174872,
+    name: 'Karachi',
+    cod: 200
+  }
+]
