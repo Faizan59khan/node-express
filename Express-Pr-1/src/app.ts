@@ -17,6 +17,12 @@ app.use(cookieParser());
 // Mount user routes
 app.use("/", userRoutes);
 
+app.get("/about", (req, res) => {
+	res.send({
+		name: "Faizan",
+	});
+});
+
 // Handling a 404 page not found
 app.use((req: Request, res: Response) => {
 	res.status(404).send("404 - Page Not Found");
