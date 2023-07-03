@@ -42,7 +42,7 @@ app.get("/protected", (req: Request, res: Response) => {
 
 		// Verify and decode the token
 		if (token) {
-			const decodedToken = jwt.verify(token, "your-secret-key");
+			const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY || "faizan");
 		}
 
 		// Access the authenticated user's data (e.g., fetch from the database)
