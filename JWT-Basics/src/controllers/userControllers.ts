@@ -12,8 +12,33 @@ export const getAllUsers = async (req: Request, res: Response) => {
 	}
 };
 
+/*This is a protected route: verify token before doing anything*/
 export const deleteUserById = async (req: Request, res: Response) => {
 	try {
+		if (!process.env.JWT_SECRET_KEY) {
+			throw new Error("JWT Secret Key is not provided in the environment variables.");
+		}
+
+		const token = req.headers.authorization;
+		if (!token) {
+			return res.status(404).send("Token not found");
+		}
+
+		let decodedToken;
+		try {
+			decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
+		} catch (error: any) {
+			if (error.name === "TokenExpiredError") {
+				return res.status(401).send("Token has expired");
+			} else {
+				throw error;
+			}
+		}
+
+		if (!decodedToken) {
+			return res.status(401).send("Invalid token");
+		}
+
 		const userId = req.params.id;
 		const isDeletedUser = await User.findByIdAndDelete(userId);
 		if (!isDeletedUser) {
