@@ -13,7 +13,7 @@ app.use(express.json());
 //Connect To DataBase
 connectDB();
 
-app.use("/", userRoutes);
+app.use("/users", userRoutes);
 
 app.get("/protected", (req: Request, res: Response) => {
 	try {
@@ -32,6 +32,11 @@ app.get("/protected", (req: Request, res: Response) => {
 	} catch (error) {
 		res.status(401).json({ error: "Unauthorized" });
 	}
+});
+
+// Handling a 404 page not found
+app.use((req: Request, res: Response) => {
+	res.status(404).send("404 - Page Not Found");
 });
 
 app.listen(3000, () => {
