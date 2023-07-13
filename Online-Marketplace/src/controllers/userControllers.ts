@@ -82,7 +82,7 @@ const sendVerificationEmail = (email: string, verificationLink: string) => {
 
 export const createNewUser = async (req: Request, res: Response) => {
 	try {
-		const { email, username, password } = req.body;
+		const { email, username, password, role } = req.body;
 
 		const existingUser = await User.findOne({ email });
 		if (existingUser) {
@@ -99,10 +99,11 @@ export const createNewUser = async (req: Request, res: Response) => {
 			password: hashedPassword,
 			verificationToken,
 			isEmailVerified: false,
+			role,
 		});
 		await user.save();
 
-		const verifyLink = `http://localhost:3000/user/verify-email?token=${verificationToken}`;
+		const verifyLink = `http://localhost:3001/user/verify-email?token=${verificationToken}`;
 		sendVerificationEmail(email, verifyLink);
 
 		res.status(201).send("User Registered Successfully. Please check your email for verification.");
