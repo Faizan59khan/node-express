@@ -18,7 +18,7 @@ interface ResponseDetails {
 export const isUserAuthenticatedAndAuthorize = async (
 	req: Request,
 	res: Response,
-	operation: string
+	operation: string | null = null
 ): Promise<ResponseDetails | boolean> => {
 	const response = {};
 	if (!process.env.JWT_SECRET_KEY) {
@@ -36,12 +36,14 @@ export const isUserAuthenticatedAndAuthorize = async (
 	let decodedToken: DecodedToken | null = null;
 	try {
 		decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY) as DecodedToken;
-		const hasPermission = await getUsersPermissions(decodedToken, operation);
-		if (!hasPermission) {
-			return {
-				status: 403,
-				message: "User does not have permission to perform this operation.",
-			};
+		if (operation) {
+			const hasPermission = await getUsersPermissions(decodedToken, operation);
+			if (!hasPermission) {
+				return {
+					status: 403,
+					message: "User does not have permission to perform this operation.",
+				};
+			}
 		}
 	} catch (error: any) {
 		if (error.name === "TokenExpiredError") {

@@ -1,11 +1,9 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
-import userRoutes from "./routes/userRoutes";
-import roleRoutes from "./routes/roleRoutes";
-import productRoutes from "./routes/productRoutes";
 import connectDB from "./db/db";
 import multer from "multer";
 import cloudinary from "cloudinary";
+import { routes } from "./routes";
 
 dotenv.config(); // Load environment variables from .env file
 const app = express();
@@ -24,11 +22,18 @@ const storage = multer.diskStorage({});
 const upload = multer({ storage });
 
 //Middlewear
-app.use("/product", upload.single("file"), productRoutes);
+app.use("/product-categories", routes.productCategoryRoutes);
+app.use("/products", upload.single("file"), routes.productRoutes);
+app.use("/roles", routes.roleRoutes);
+app.use("/user", routes.userRoutes);
 
-app.use("/roles", roleRoutes);
-app.use("/user", userRoutes);
+// Error handling middleware
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+	console.error(err);
+	res.status(500).send("Internal Server Error");
+});
 
+//Page Not Found
 app.use((req: Request, res: Response) => {
 	res.status(404).send("404 - Page Not Found");
 });

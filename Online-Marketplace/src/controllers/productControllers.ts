@@ -23,7 +23,9 @@ export const createProduct = async (req: Request, res: Response) => {
 			let result: any;
 			let file: any;
 			try {
-				result = await cloudinaryV2.uploader.upload(req.file.path);
+				result = await cloudinaryV2.uploader.upload(req.file.path, {
+					folder: "OnlineMarketPlace", // Specify the folder to store the asset
+				});
 				// Save file details to the database
 				file = new File({
 					name: req.file.originalname,
@@ -44,7 +46,7 @@ export const createProduct = async (req: Request, res: Response) => {
 					price,
 					quantity,
 					category,
-					image: file?._id, // Assign the image reference to the product
+					image: result.secure_url,
 				});
 
 				await product.save();
@@ -63,19 +65,53 @@ export const createProduct = async (req: Request, res: Response) => {
 	}
 };
 
+//Simple Concept skip takes starting document and limit takes last document.
+// GET /products?offset=0&limit=10
+// GET /products?offset=10&limit=10
+// GET /products?offset=20&limit=10
 export const getProducts = async (req: Request, res: Response) => {
 	try {
-		const products = await Product.find({});
-		const productWithImages: any = await Promise.all(
-			products.map(async (product) => {
-				const image = await File.findById(product.image);
-				return {
-					...product.toObject(), //convert the Mongoose document to a plain JavaScript object
-					image,
-				};
-			})
-		);
-		res.status(200).send(productWithImages);
+		const responseDetails = await isUserAuthenticatedAndAuthorize(req, res);
+		if (typeof responseDetails === "boolean" && responseDetails) {
+			//This type of pagination helps in infinite scroll on the frontend
+
+			const offset = parseInt(req?.query?.offset as string) || 0;
+			const limit = parseInt(req?.query?.limit as string) || 10;
+
+			const products = await Product.find({}).skip(offset).limit(limit);
+			res.status(200).send(products);
+		} else {
+			if (typeof responseDetails === "object") {
+				res.status(responseDetails?.status).send(responseDetails?.message);
+			}
+		}
+	} catch (err) {
+		res.status(500).send("Internal Server Error");
+	}
+};
+
+// GET /products?page=1&perPage=10
+// GET /products?page=2&perPage=10
+// GET /products?page=3&perPage=10
+export const getProductsPageBased = async (req: Request, res: Response) => {
+	try {
+		const responseDetails = await isUserAuthenticatedAndAuthorize(req, res);
+		if (typeof responseDetails === "boolean" && responseDetails) {
+			//This type of pagination helps in page navigation system,
+			//displaying search results or when users have explicit control over moving between pages
+
+			const page = parseInt(req?.query?.offset as string) || 1;
+			const perPage = parseInt(req?.query?.limit as string) || 10;
+
+			const skip = (page - 1) * perPage;
+
+			const products = await Product.find({}).skip(skip).limit(perPage);
+			res.status(200).send(products);
+		} else {
+			if (typeof responseDetails === "object") {
+				res.status(responseDetails?.status).send(responseDetails?.message);
+			}
+		}
 	} catch (err) {
 		res.status(500).send("Internal Server Error");
 	}

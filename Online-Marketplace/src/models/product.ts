@@ -9,18 +9,17 @@ export interface ProductDocument extends Document {
 	quantity: number;
 	price: number;
 	currency: string;
-	image: FileDocument;
+	image: string;
 }
 
 const productSchema = new Schema<ProductDocument>({
 	name: { type: String, required: true },
 	description: { type: String },
-	//category: { type: mongoose.Schema.Types.ObjectId, ref: "ProductCategory" },
-	category: { type: String, required: true },
+	category: { type: mongoose.Schema.Types.ObjectId, ref: "ProductCategory" },
 	quantity: { type: Number, required: true },
 	price: { type: Number, required: true },
 	currency: { type: String },
-	image: { type: mongoose.Schema.Types.ObjectId, ref: "File" },
+	image: { type: String },
 });
 
 const Product = mongoose.model<ProductDocument>("Product", productSchema);
