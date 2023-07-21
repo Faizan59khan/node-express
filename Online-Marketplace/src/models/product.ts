@@ -1,6 +1,7 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Mongoose, Schema } from "mongoose";
 import { ProductCategoryDocument } from "./productCategory";
 import { FileDocument } from "./file";
+import { UserDocument } from "./user";
 
 export interface ProductDocument extends Document {
 	name: string;
@@ -10,6 +11,7 @@ export interface ProductDocument extends Document {
 	price: number;
 	currency: string;
 	image: string;
+	createdBy: string;
 }
 
 const productSchema = new Schema<ProductDocument>({
@@ -20,6 +22,7 @@ const productSchema = new Schema<ProductDocument>({
 	price: { type: Number, required: true },
 	currency: { type: String },
 	image: { type: String },
+	createdBy: { type: String, required: true },
 });
 
 const Product = mongoose.model<ProductDocument>("Product", productSchema);

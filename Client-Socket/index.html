@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Socket.io Chat</title>
+		<style>
+			/* Simple CSS for the product list */
+			ul {
+				list-style: none;
+				padding: 0;
+			}
+
+			li {
+				cursor: pointer;
+				margin: 5px;
+				padding: 8px 12px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+			}
+
+			li.selected {
+				background-color: #007bff;
+				color: #fff;
+			}
+
+			/* Basic CSS for the chat area */
+			#chatArea {
+				margin-top: 20px;
+				padding: 10px;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				max-height: 300px;
+				overflow-y: auto;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Socket.io Client</h1>
+		<!-- Product list -->
+		<ul id="productList">
+			<li data-product-id="64ba6742547d854ed9079da3">Product 1</li>
+			<li data-product-id="product-2">Product 2</li>
+			<!-- Add more product items as needed -->
+		</ul>
+		<div id="chatArea">
+			<!-- Messages will be displayed here -->
+		</div>
+
+		<form id="chatForm">
+			<input type="text" id="messageInput" placeholder="Enter your message" />
+			<button type="submit">Send</button>
+		</form>
+
+		<!-- Include Socket.io library -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+		<!-- Your custom client-side script -->
+		<script src="./client.js"></script>
+	</body>
+</html>

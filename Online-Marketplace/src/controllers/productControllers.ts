@@ -1,15 +1,34 @@
 import express, { Request, Response } from "express";
 import File from "../models/file";
 import Product from "../models/product";
-import { isUserAuthenticatedAndAuthorize } from "../helpers/helper";
+import { DecodedToken, isUserAuthenticatedAndAuthorize } from "../helpers/helper";
 import { cloudinaryV2 } from "../app";
+import jwt from "jsonwebtoken";
+import User from "../models/user";
 
 export const createProduct = async (req: Request, res: Response) => {
 	try {
 		const responseDetails = await isUserAuthenticatedAndAuthorize(req, res, "createProduct");
 		if (typeof responseDetails === "boolean" && responseDetails) {
-			const { name, description, price, quantity, category } = req.body;
+			const token = req?.headers?.authorization;
+			if (!process.env.JWT_SECRET_KEY) {
+				throw new Error("JWT Secret Key is not provided in the environment variables.");
+			}
 
+			if (!token) {
+				return res.status(401).send("Token Not Found");
+			}
+
+			const decodedToken: DecodedToken | null = jwt.verify(
+				token,
+				process.env.JWT_SECRET_KEY
+			) as DecodedToken;
+			const user = await User.findOne({ email: decodedToken.email });
+			if (!user) {
+				return res.status(401).send("User Not Found");
+			}
+
+			const { name, description, price, quantity, category } = req.body;
 			// Validate
 			if (!name || !description || !price || !quantity || !category) {
 				return res.status(400).send("Incomplete product details");
@@ -37,7 +56,6 @@ export const createProduct = async (req: Request, res: Response) => {
 			} catch (err) {
 				throw new Error("File Upload Failed");
 			}
-
 			if (file) {
 				// Create the product and associate it with the uploaded file
 				const product = new Product({
@@ -47,6 +65,7 @@ export const createProduct = async (req: Request, res: Response) => {
 					quantity,
 					category,
 					image: result.secure_url,
+					createdBy: user._id,
 				});
 
 				await product.save();

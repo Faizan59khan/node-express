@@ -4,7 +4,7 @@ import User from "../models/user";
 import Role, { USER_ROLE } from "../models/role";
 
 // Define interfaces for decodedToken and user objects
-interface DecodedToken {
+export interface DecodedToken {
 	email: string;
 	iat: number;
 	exp: number;
