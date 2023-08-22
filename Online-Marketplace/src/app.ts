@@ -1,5 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 import connectDB from "./db/db";
 import cors from "cors";
 import multer from "multer";
@@ -7,7 +7,7 @@ import cloudinary from "cloudinary";
 import { routes } from "./routes";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import path from "path"; // Import the 'path' module
+import path from "path";
 import Message from "./models/message";
 
 dotenv.config(); // Load environment variables from .env file
@@ -76,6 +76,7 @@ const publicDirPath = path.join(__dirname, "../../Client-Socket");
 app.use(express.static(publicDirPath));
 
 // Middlewear
+app.use("/orders", routes.orderRoutes);
 app.use("/product-categories", routes.productCategoryRoutes);
 app.use("/products", upload.single("file"), routes.productRoutes);
 app.use("/roles", routes.roleRoutes);

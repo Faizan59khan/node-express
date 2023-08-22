@@ -87,3 +87,5 @@ export const getUsersPermissions = async (
 		return false;
 	}
 };
+
+export const handleAuthorization = async (req: Request, res: Response, operation: string) => {};
