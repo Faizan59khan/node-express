@@ -1,4 +1,4 @@
-# Welcome to the Express Practice Project Repository
+# Welcome to the Express Practice Projects Repository
 
 Welcome to the **Express Practice Project** repository! This repository serves as an educational playground where a multitude of captivating concepts have been covered. Here's a glimpse of the key features included:
 
