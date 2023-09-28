@@ -2,9 +2,10 @@ import mongoose, { Document, Schema } from "mongoose";
 import { ProductDocument } from "./product";
 import { UserDocument } from "./user";
 import Stripe from "stripe";
+import { Product } from "../helpers/types";
 
 export interface OrderDocument extends Document {
-	products: ProductDocument[];
+	products: Product[];
 	buyerId: UserDocument;
 	sellerId: UserDocument;
 	totalAmount: number;
@@ -17,7 +18,12 @@ export interface OrderDocument extends Document {
 }
 
 const orderSchema = new Schema<OrderDocument>({
-	products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true }],
+	products: [
+		{
+			productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+			quantity: { type: Number, required: true },
+		},
+	],
 	buyerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 	sellerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 	totalAmount: { type: Number, required: true },

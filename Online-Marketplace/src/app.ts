@@ -76,6 +76,7 @@ const publicDirPath = path.join(__dirname, "../../Client-Socket");
 app.use(express.static(publicDirPath));
 
 // Middlewear
+app.use("/payments", routes.paymentRoutes);
 app.use("/orders", routes.orderRoutes);
 app.use("/product-categories", routes.productCategoryRoutes);
 app.use("/products", upload.single("file"), routes.productRoutes);
